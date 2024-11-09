@@ -6,3 +6,15 @@ body {
   background-color: #000;
   color: #fff;
 }
+
+input[type="number"] {
+  -webkit-appearance: textfield; /* Remove as setinhas no Chrome, Safari e Edge */
+  -moz-appearance: textfield; /* Remove as setinhas no Firefox */
+  appearance: textfield; /* Padrão para navegadores que suportam */
+}
+
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

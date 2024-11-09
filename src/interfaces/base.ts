@@ -3,4 +3,4 @@ interface OptionProps {
     route: string;
     title: string;
     description: string;
-  }
+}

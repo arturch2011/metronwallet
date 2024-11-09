@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable */
 interface InputProps {
   value?: any;
   required?: boolean;

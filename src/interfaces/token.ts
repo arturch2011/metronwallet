@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 interface TokenProps {
     imgUrl: string;
     name: string;

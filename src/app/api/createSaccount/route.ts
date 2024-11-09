@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { db, auth } from "@/firebase/config";
 
 export const POST = async (req: NextRequest) => {
+    console.log("POSST HEREEEEEEEEEEEEEE");
     try {
         const url = process.env.RPC_URL as string;
 
@@ -50,9 +51,17 @@ export const POST = async (req: NextRequest) => {
                 });
             }
         );
+
+        return new NextResponse(
+            JSON.stringify({ message: "User created successfully" }),
+            {
+                status: 200,
+            }
+        );
     } catch (error: any) {
+        console.log(error);
         return new NextResponse(JSON.stringify({ message: error.message }), {
-            status: 200,
+            status: 500,
         });
     }
 };

@@ -6,6 +6,8 @@ interface SkeletonProps {
 
 export const Skeleton: React.FC<SkeletonProps> = ({ children }) => {
   return (
-    <div className="min-h-screen w-full p-4 flex flex-col">{children}</div>
+    <div className="min-h-screen w-full p-4 flex flex-col gap-4">
+      {children}
+    </div>
   );
 };

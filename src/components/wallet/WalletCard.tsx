@@ -13,11 +13,6 @@ import { useRouter } from "next/navigation";
 
 export const WalletCard = () => {
   const router = useRouter();
-  function goToAdd() {
-    console.log("aaaaaaaaaaaaaaaaaaaa");
-
-    router.push("/add");
-  }
   return (
     <div className="w-full p-4 rounded-2xl bg-white/20 shadow-md flex flex-col justify-center items-center">
       <h2>Your Balance</h2>
@@ -25,16 +20,22 @@ export const WalletCard = () => {
         <span className="text-slate-500 mr-2">$</span>00.00
       </p>
       <div className="w-full flex justify-between items-center mt-4">
-        <Button>
+        <Button
+          className="bg-black/40 text-white/40"
+          onClick={() => router.push("/withdraw")}
+        >
           <MdArrowUpward className="text-2xl font-bold" />
         </Button>
-        <Button onClick={() => goToAdd()}>
+        <Button
+          className="bg-black/40 text-white/40"
+          onClick={() => router.push("/add")}
+        >
           <MdOutlineAdd className="text-2xl font-bold" />
         </Button>
-        <Button>
+        <Button className="bg-black/40 text-white/40">
           <MdOutlineSwapHoriz className="text-2xl font-bold" />
         </Button>
-        <Button>
+        <Button className="bg-black/40 text-white/40">
           <MdHistory className="text-2xl font-bold" />
         </Button>
       </div>

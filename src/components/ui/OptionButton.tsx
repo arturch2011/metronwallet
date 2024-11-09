@@ -20,13 +20,13 @@ export const OptionButton = ({
       onClick={() => router.push(route)}
       className="w-full flex items-center justify-between py-4"
     >
-      <div className="flex items-center gap-2">
-        <div className="w-12 h-12 rounded-full bg-white">
-          <Icon />
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-yellow-500 flex items-center justify-center">
+          <Icon className="text-xl" />
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col items-start gap-1">
           <h3>{title}</h3>
-          <p className="text-sm text-slate-500 truncate">$ {description}</p>
+          <p className="text-sm text-slate-500 truncate">{description}</p>
         </div>
       </div>
       <IoIosArrowForward className="text-2xl font-bold" />

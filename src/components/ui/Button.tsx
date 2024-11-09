@@ -21,9 +21,9 @@ export const Button = ({
     <motion.button
       whileTap={{ scale: 0.95 }}
       type={type}
-      onClick={() => onClick}
+      onClick={onClick}
       disabled={disabled}
-      className={`${className} px-4 py-2 bg-black/40 text-white/40 rounded-xl`}
+      className={`${className} px-4 py-2  rounded-xl`}
     >
       {children}
     </motion.button>

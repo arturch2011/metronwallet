@@ -34,11 +34,14 @@ export const POST = async (req: NextRequest) => {
         const contract = new ethers.Contract(
             `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
             ERC20,
-            provider
+            signer
         );
 
-        const mintTx = await (contract.populateTransaction as any).transfer(
-            "alchemyWallet",
+        console.log("Contract", contract);
+        const transferFunction = contract.getFunction("transfer");
+
+        const mintTx = await transferFunction.populateTransaction(
+            "0xC4b9190C160253071375c4d3e4f2574E8Bb57FD5",
             amount.toString()
         );
 

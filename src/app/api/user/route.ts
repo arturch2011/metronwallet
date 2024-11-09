@@ -1,16 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createSmartAccountClient } from "@biconomy/account";
-import {
-    collection,
-    doc,
-    getDocs,
-    query,
-    setDoc,
-    getDoc,
-} from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { ethers } from "ethers";
-import { db, auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -51,6 +43,7 @@ export const POST = async (req: NextRequest) => {
             JSON.stringify({
                 message: "user data found",
                 userWallet: smartWallet,
+                idWallet: userData.idWallet,
             }),
             { status: 200 }
         );

@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 export const WalletCard = () => {
   const router = useRouter();
   function goToAdd() {
+    console.log("aaaaaaaaaaaaaaaaaaaa");
+
     router.push("/add");
   }
   return (
@@ -26,7 +28,7 @@ export const WalletCard = () => {
         <Button>
           <MdArrowUpward className="text-2xl font-bold" />
         </Button>
-        <Button onClick={goToAdd}>
+        <Button onClick={() => goToAdd()}>
           <MdOutlineAdd className="text-2xl font-bold" />
         </Button>
         <Button>

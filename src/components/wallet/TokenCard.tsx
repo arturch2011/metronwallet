@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 
 interface TokenCardProps {
   imgUrl: string;
@@ -9,7 +9,7 @@ interface TokenCardProps {
 }
 
 export const TokenCard = ({
-  imgUrl,
+  // imgUrl,
   name,
   value,
   quantity,

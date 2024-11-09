@@ -8,6 +8,7 @@ export const POST = async (req: NextRequest) => {
         const url = process.env.RPC_URL as string;
         let idWallet = 0;
         const data = await req.json();
+        const { to, amount, walletId } = data;
 
         let provider = new ethers.JsonRpcProvider(url);
         let signer = new ethers.Wallet(
@@ -30,7 +31,7 @@ export const POST = async (req: NextRequest) => {
 
         console.log("Smartwallet addresss", smartWallet);
 
-        var amount: any = ethers.parseUnits("100", 18);
+        var amount2: any = ethers.parseUnits("100", 18);
         const contract = new ethers.Contract(
             `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
             ERC20,
@@ -42,8 +43,8 @@ export const POST = async (req: NextRequest) => {
 
         const mintTx = await transferFunction.populateTransaction(
             "0xC4b9190C160253071375c4d3e4f2574E8Bb57FD5",
-            amount.toString()
-          );
+            amount2.toString()
+        );
 
         const tx = {
             to: `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,

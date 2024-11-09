@@ -1,16 +1,16 @@
 import { ethers } from "ethers";
 import ERC20 from "@/utils/ERC20.json";
 import { createSmartAccountClient, PaymasterMode } from "@biconomy/account";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const POST = async () => {
     try {
         const url = process.env.RPC_URL as string;
-        let idWallet = 0;
-        const data = await req.json();
+        const idWallet = 0;
+        // const data = await req.json();
 
-        let provider = new ethers.JsonRpcProvider(url);
-        let signer = new ethers.Wallet(
+        const provider = new ethers.JsonRpcProvider(url);
+        const signer = new ethers.Wallet(
             `${process.env.WALLET_PRIVATE_KEY}`,
             provider
         );
@@ -30,7 +30,7 @@ export const POST = async (req: NextRequest) => {
 
         console.log("Smartwallet addresss", smartWallet);
 
-        var amount: any = ethers.parseUnits("100", 18);
+        const amount: bigint = ethers.parseUnits("100", 18);
         const contract = new ethers.Contract(
             `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
             ERC20,
@@ -69,8 +69,8 @@ export const POST = async (req: NextRequest) => {
             JSON.stringify({ message: "success on transaction " }),
             { status: 200 }
         );
-    } catch (error: any) {
-        return new NextResponse(JSON.stringify({ message: error.message }), {
+    } catch (error) {
+        return new NextResponse(JSON.stringify({ message: JSON.stringify(error) }), {
             status: 500,
         });
     }

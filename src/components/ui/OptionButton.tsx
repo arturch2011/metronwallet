@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { IconType } from "react-icons";
+// import { IconType } from "react-icons";
 import { IoIosArrowForward } from "react-icons/io";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { OptionProps } from "@/interfaces/base";
 
 export const OptionButton = ({
   Icon,

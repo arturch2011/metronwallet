@@ -22,8 +22,8 @@ export const POST = async (req: NextRequest) => {
         const queryIndex = query(usersRef);
         const index = (await getDocs(queryIndex)).size || 0;
 
-        let provider = new ethers.JsonRpcProvider(url);
-        let signer = new ethers.Wallet(
+        const provider = new ethers.JsonRpcProvider(url);
+        const signer = new ethers.Wallet(
             `${process.env.WALLET_PRIVATE_KEY}`,
             provider
         );
@@ -62,9 +62,9 @@ export const POST = async (req: NextRequest) => {
                 status: 200,
             }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.log(error);
-        return new NextResponse(JSON.stringify({ message: error.message }), {
+        return new NextResponse(JSON.stringify({ message: JSON.stringify(error) }), {
             status: 500,
         });
     }

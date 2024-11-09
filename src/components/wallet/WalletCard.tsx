@@ -2,13 +2,13 @@
 
 import { Button } from "../ui/Button";
 import {
-  MdArrowDownward,
+  // MdArrowDownward,
   MdOutlineAdd,
   MdOutlineSwapHoriz,
   MdHistory,
   MdArrowUpward,
 } from "react-icons/md";
-import { FaArrowDown } from "react-icons/fa";
+// import { FaArrowDown } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 export const WalletCard = () => {

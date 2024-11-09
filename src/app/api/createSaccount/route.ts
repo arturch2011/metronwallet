@@ -10,8 +10,12 @@ export const POST = async (req: NextRequest) => {
     try {
         const url = process.env.RPC_URL as string;
 
+        
         const data = await req.json();
+        console.log("DATAAAAAAAAAAAAAA", data);
         const { email, password } = data;
+
+        
 
         const userBase = doc(db, "users", email);
         const usersRef = collection(db, "users");

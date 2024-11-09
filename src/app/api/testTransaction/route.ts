@@ -43,7 +43,7 @@ export const POST = async (req: NextRequest) => {
         const mintTx = await transferFunction.populateTransaction(
             "0xC4b9190C160253071375c4d3e4f2574E8Bb57FD5",
             amount.toString()
-        );
+          );
 
         const tx = {
             to: `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,

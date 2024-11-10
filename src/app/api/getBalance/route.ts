@@ -43,11 +43,11 @@ export const POST = async (req: NextRequest) => {
             const asset = balance.address === '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE' ? "tBNB" : "MTK";
             return {
                 asset,
+                address: balance.address,
                 amount: balance.amount.toString(),
-                balance: balance.formattedAmount,
+                formattedAmount: balance.formattedAmount,
             };
         })
-        
         console.log(formatedBalances)
 
         return new NextResponse(

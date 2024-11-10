@@ -15,23 +15,12 @@ interface UserData {
 
 export function TelegramInfo() {
   const [userData, setUserData] = useState<UserData | null>(null)
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    // Set isClient to true after the first render to prevent SSR mismatches
-    setIsClient(true);
-    if (typeof window !== "undefined") {
-      const user = WebApp.initDataUnsafe?.user;
-      if (user) {
-        setUserData(user as UserData);
-      }
+    if (WebApp.initDataUnsafe.user) {
+      setUserData(WebApp.initDataUnsafe.user as UserData)
     }
   }, [])
-
-  if (!isClient) {
-    // Render nothing on the server to prevent SSR mismatches
-    return null;
-  }
 
   return (
     <div className="p-4">

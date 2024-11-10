@@ -32,7 +32,10 @@ export const POST = async (req: NextRequest) => {
 
         if (userDoc.exists()) {
             return new NextResponse(
-                JSON.stringify({ message: "User already have an account" }),
+                JSON.stringify({
+                    message: "User already have an account",
+                    user: userDoc.data(),
+                }),
                 { status: 200 }
             );
         }
@@ -60,19 +63,7 @@ export const POST = async (req: NextRequest) => {
             index: index,
         });
 
-        const userObj = {
-            id: id,
-            firstName: firstName,
-            lastName: lastName,
-            userName: userName,
-            languageCode: languageCode,
-            // allowsWriteToPm: allowsWriteToPm,
-            wallet: smartWallet,
-            idWallet: index,
-        }
-        console.log("USER OBJ", userObj);
-
-        await setDoc(userBase, {
+        const user = await setDoc(userBase, {
             id: id,
             firstName: firstName,
             lastName: lastName,
@@ -84,7 +75,10 @@ export const POST = async (req: NextRequest) => {
         });
 
         return new NextResponse(
-            JSON.stringify({ message: "User created successfully" }),
+            JSON.stringify({
+                message: "User created successfully",
+                user: user,
+            }),
             {
                 status: 200,
             }

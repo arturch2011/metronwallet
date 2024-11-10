@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable */
 
 import WebApp from "@twa-dev/sdk";
 // import { useRouter } from 'next/navigation';
@@ -14,29 +15,52 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
+  const [userSAccount, setUserSAccount] = useState<UserData | null>(null);
   // const router = useRouter();
 
-  useEffect(() => {
+  const initUser = async () => {
+    let tguser: UserData | null = null;
     if (WebApp.initDataUnsafe.user) {
-      setUser(WebApp.initDataUnsafe.user as UserData);
+      tguser = WebApp.initDataUnsafe.user as UserData;
     }
+
+    if (tguser) {
+      try {
+        const response: CreateSAccountResponse = await fetch(
+          "/api/createSaccount",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: tguser.id.toString(),
+              firstName: tguser.first_name,
+              lastName: tguser.last_name ?? "",
+              userName: tguser.username,
+              languageCode: tguser.language_code,
+            }),
+          }
+        ).then((res) => res.json());
+
+        console.log(response);
+
+        if (response.user.idWallet !== undefined) {
+          setUser({
+            ...tguser,
+            wallet: response.user.wallet,
+            idWallet: response.user.idWallet,
+          });
+        }
+      } catch (error) {
+        console.error("Failed to create Saccount:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    initUser();
   }, []);
-
-  // useEffect(() => {
-  //     const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //         setUser(user);
-  //         setIsLoading(false); // Set loading to false when auth state is determined
-
-  //         if (!user) {
-  //             router.push('/login');
-  //         }
-  //         // else {
-  //         //     router.push("/"); // Redirect to home if user is authenticated
-  //         // }
-  //     });
-
-  //     return () => unsubscribe();
-  // }, [router]);
 
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>

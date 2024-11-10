@@ -7,4 +7,20 @@ interface UserData {
     username?: string;
     language_code: string;
     is_premium?: boolean;
+    wallet?: string;
+    idWallet?: number;
 }
+
+interface CreateSAccountResponse {
+    message: string;
+    user: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      userName: string;
+      languageCode: string;
+      allowsWriteToPm: boolean;
+      wallet: string;
+      idWallet: number;
+    };
+  }

@@ -6,10 +6,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 interface AuthContextType {
   user: UserData | null;
+  setSAccountInfo: ({ idWallet }: { idWallet: number }) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
+  setSAccountInfo: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -38,8 +40,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //     return () => unsubscribe();
   // }, [router]);
 
+  function setSAccountInfo({ idWallet }: { idWallet: number }) {
+    setUser((prevUser) => {
+      if (prevUser) {
+        return {
+          ...prevUser,
+          idWallet,
+        };
+      }
+      return prevUser;
+    });
+  }
+
   return (
-    <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ user, setSAccountInfo }}>{children}</AuthContext.Provider>
   );
 };
 

@@ -7,4 +7,5 @@ interface UserData {
     username?: string;
     language_code: string;
     is_premium?: boolean;
+    idWallet?: number;
 }

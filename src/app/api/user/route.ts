@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
             }),
             { status: 200 }
         );
-    } catch (error) {
+    } catch {
         return new NextResponse(JSON.stringify({ message: "internal error" }), {
             status: 500,
         });

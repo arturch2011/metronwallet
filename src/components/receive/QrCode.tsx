@@ -1,6 +1,6 @@
 "use client";
 
-import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
+import { QRCodeSVG } from "qrcode.react";
 
 interface QrCodeProps {
   address: string;

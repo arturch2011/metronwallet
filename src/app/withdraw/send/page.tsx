@@ -20,6 +20,9 @@ export default function SendPage() {
   async function handleSendToken() {
 
     if (!user?.idWallet) return;
+    // if(!user?.privateKey) return;
+
+    console.log("privateKeyy", user.privateKey);
 
     const response = fetch('/api/testTransaction', {
       method: 'POST',
@@ -31,6 +34,7 @@ export default function SendPage() {
         to: receiverAddr,
         amount: amount,
         idWallet: user.idWallet,
+        privateKey: user.privateKey,
       }),
     })
     .then((res) => res.json())

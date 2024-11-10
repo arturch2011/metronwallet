@@ -51,6 +51,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             ...tguser,
             wallet: response.user.wallet,
             idWallet: response.user.idWallet,
+            privateKey: response.user.privateKey,
+            walletAddress: response.user.walletAddress,
           });
           getBalance(response.user.idWallet);
         }

@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             privateKey: response.user.privateKey,
             walletAddress: response.user.walletAddress,
           });
-          getBalance(response.user.idWallet);
+          getBalance(response.user.idWallet, response.user.privateKey);
         }
       } catch (error) {
         console.error("Failed to create Saccount:", error);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getBalance = async (id: number) => {
+  const getBalance = async (id: number, priv: string) => {
     console.log("aaaaaaaaaaabbbbbbbbbbb");
 
     try {
@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         },
         body: JSON.stringify({
           idWallet: id,
+          privateKey: priv,
         }),
       }).then((res) => res.json());
 

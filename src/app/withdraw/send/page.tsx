@@ -11,6 +11,7 @@ import { useState } from "react";
 export default function SendPage() {
   const { user } = useAuth();
   const [selectedToken, setSelectedToken] = useState<TokenProps | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [receiverAddr, setReceiverAddr] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const handleSelect = (token: TokenProps) => {
@@ -18,26 +19,37 @@ export default function SendPage() {
   };
 
   async function handleSendToken() {
+    setIsLoading(true);
 
-    if (!user?.idWallet) return;
+    // if (user?.idWallet) {
+    //   console.log("aaaaaaaaaaaa", user);
+
+    //   return;
+    // }
     // if(!user?.privateKey) return;
+    try {
+      console.log("privateKeyy", user!.privateKey);
 
-    console.log("privateKeyy", user.privateKey);
+      const response = await fetch("/api/testTransaction", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // token: selectedToken,
+          to: receiverAddr,
+          amount: amount,
+          idWallet: user!.idWallet,
+          privateKey: user!.privateKey,
+        }),
+      });
 
-    const response = fetch('/api/testTransaction', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        // token: selectedToken,
-        to: receiverAddr,
-        amount: amount,
-        idWallet: user.idWallet,
-        privateKey: user.privateKey,
-      }),
-    })
-    .then((res) => res.json())
+      const res = await response.json();
+    } catch (error) {
+      console.log("error");
+    }
+
+    setIsLoading(false);
   }
   return (
     <Skeleton>
@@ -59,13 +71,11 @@ export default function SendPage() {
           onChange={(e) => setAmount(Number(e.target.value))}
         />
       </div>
-      <Button 
+      <Button
         className="bg-yellow-400 text-black"
-        onClick={async () => {
-          await handleSendToken()
-        }}
+        onClick={() => handleSendToken()}
       >
-        Send
+        {isLoading ? "Sending..." : "Send"}
       </Button>
     </Skeleton>
   );

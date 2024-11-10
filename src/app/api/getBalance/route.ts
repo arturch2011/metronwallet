@@ -7,11 +7,11 @@ export const POST = async (req: NextRequest) => {
     try {
         const url = process.env.RPC_URL as string;
 
-        const { idWallet } = await req.json();
+        const { idWallet, privateKey } = await req.json();
 
         const provider = new ethers.JsonRpcProvider(url);
         const signer = new ethers.Wallet(
-            `${process.env.WALLET_PRIVATE_KEY}`,
+            privateKey,
             provider
         );
 

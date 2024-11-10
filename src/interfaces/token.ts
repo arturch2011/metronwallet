@@ -6,4 +6,5 @@ interface TokenProps {
     value: number;
     quantity: number;
     symbol: string;
+    address?: string;
 }

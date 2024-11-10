@@ -82,6 +82,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             value: token.asset == "tBNB" ? 630.44 : 1,
             quantity: Number(token.formattedAmount),
             symbol: token.asset == "tBNB" ? "BNB" : "MTK",
+            address: token.asset,
           };
 
           finalList.push(currenttk);

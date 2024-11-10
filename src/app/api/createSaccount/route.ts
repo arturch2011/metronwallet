@@ -16,6 +16,9 @@ export const POST = async (req: NextRequest) => {
     try {
         const url = process.env.RPC_URL as string;
 
+        const wallet = ethers.Wallet.createRandom();
+        const privateKey = wallet.privateKey;
+
         const data = await req.json();
         // console.log("DATAAAAAAAAAAAAAA", data);
         const {
@@ -40,15 +43,8 @@ export const POST = async (req: NextRequest) => {
             );
         }
 
-        const usersRef = collection(db, "users");
-        const queryIndex = query(usersRef);
-        const index = (await getDocs(queryIndex)).size || 0;
-
         const provider = new ethers.JsonRpcProvider(url);
-        const signer = new ethers.Wallet(
-            `${process.env.WALLET_PRIVATE_KEY}`,
-            provider
-        );
+        const signer = new ethers.Wallet(privateKey, provider);
 
         const biconomySmartAccountConfig = {
             signer: signer,
@@ -60,9 +56,8 @@ export const POST = async (req: NextRequest) => {
             biconomySmartAccountConfig
         );
         const smartWallet = await smartAccount.getAccountAddress({
-            index: index,
+            index: 0,
         });
-        
 
         const userObj = {
             id: id,
@@ -72,8 +67,10 @@ export const POST = async (req: NextRequest) => {
             languageCode: languageCode,
             // allowsWriteToPm: allowsWriteToPm,
             wallet: smartWallet,
-            idWallet: index,
-        }
+            idWallet: 0,
+            privateKey: privateKey,
+            walletAddress: wallet.address,
+        };
 
         const user = await setDoc(userBase, userObj);
 

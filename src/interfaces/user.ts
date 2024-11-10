@@ -9,18 +9,22 @@ interface UserData {
     is_premium?: boolean;
     wallet?: string;
     idWallet?: number;
+    privateKey?: string;
+    walletAddress?: string;
 }
 
 interface CreateSAccountResponse {
     message: string;
     user: {
-      id: string;
-      firstName: string;
-      lastName: string;
-      userName: string;
-      languageCode: string;
-      allowsWriteToPm: boolean;
-      wallet: string;
-      idWallet: number;
+        id: string;
+        firstName: string;
+        lastName: string;
+        userName: string;
+        languageCode: string;
+        allowsWriteToPm: boolean;
+        wallet: string;
+        idWallet: number;
+        privateKey: string;
+        walletAddress: string;
     };
-  }
+}

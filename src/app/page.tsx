@@ -7,15 +7,16 @@ import { WalletCard } from "@/components/wallet/WalletCard";
 import { useAuth } from "@/providers/user-context";
 
 export default function Home() {
-  const { user } = useAuth();
+  const { user, tokens } = useAuth();
+  console.log(tokens);
 
-  if (!user) {
+  if (!user || tokens?.length == 0) {
     return <ProgressIndicator />;
   } else {
     return (
       <Skeleton>
-        <WalletCard />
-        <TokenList />
+        <WalletCard tokenlist={tokens!} />
+        <TokenList tokenslist={tokens!} />
       </Skeleton>
     );
   }

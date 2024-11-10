@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             wallet: response.user.wallet,
             idWallet: response.user.idWallet,
           });
-          getBalance();
+          getBalance(response.user.idWallet);
         }
       } catch (error) {
         console.error("Failed to create Saccount:", error);
@@ -60,38 +60,40 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const getBalance = async () => {
-    if (user) {
-      try {
-        const response = await fetch("/api/getBalance", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            idWallet: user.idWallet,
-          }),
-        }).then((res) => res.json());
+  const getBalance = async (id: number) => {
+    console.log("aaaaaaaaaaabbbbbbbbbbb");
 
-        console.log(response);
-        const finalList: TokenProps[] = [];
-        response.forEach((token: any) => {
-          const currenttk: TokenProps = {
-            imgUrl: token.asset,
-            name: token.asset == "tBNB" ? "BNB" : "MyToken",
-            value: token.asset == "tBNB" ? 630.44 : 1,
-            quantity: Number(token.formattedAmount),
-            symbol: token.asset == "tBNB" ? "BNB" : "MTK",
-            address: token.asset,
-          };
+    try {
+      console.log("bbbbbbbbbbbbb");
 
-          finalList.push(currenttk);
-        });
+      const response = await fetch("/api/getBalance", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          idWallet: id,
+        }),
+      }).then((res) => res.json());
 
-        setTokens(finalList);
-      } catch (error) {
-        console.error("Failed to get balance:", error);
-      }
+      console.log("ccccccccccccc", response);
+      const finalList: TokenProps[] = [];
+      response.formatedBalances.forEach((token: any) => {
+        const currenttk: TokenProps = {
+          imgUrl: token.asset,
+          name: token.asset == "tBNB" ? "BNB" : "MyToken",
+          value: token.asset == "tBNB" ? 630.44 : 1,
+          quantity: Number(token.formattedAmount),
+          symbol: token.asset == "tBNB" ? "BNB" : "MTK",
+          address: token.asset,
+        };
+
+        finalList.push(currenttk);
+      });
+
+      setTokens(finalList);
+    } catch (error) {
+      console.error("Failed to get balance:", error);
     }
   };
 

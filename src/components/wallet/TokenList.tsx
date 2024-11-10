@@ -1,6 +1,9 @@
 import { TokenCard } from "./TokenCard";
+interface TokenListProps {
+  tokenslist: TokenProps[];
+}
 
-export const TokenList = () => {
+export const TokenList = ({ tokenslist }: TokenListProps) => {
   const tokens = [
     {
       imgUrl:
@@ -21,7 +24,7 @@ export const TokenList = () => {
   ];
   return (
     <div className="w-full flex flex-col">
-      {tokens.map((token, index) => (
+      {tokenslist.map((token, index) => (
         <TokenCard
           key={index}
           imgUrl={token.imgUrl}

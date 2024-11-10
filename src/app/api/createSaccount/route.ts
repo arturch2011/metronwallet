@@ -24,7 +24,7 @@ export const POST = async (req: NextRequest) => {
             lastName,
             userName,
             languageCode,
-            allowsWriteToPm,
+            // allowsWriteToPm,
         } = data;
 
         const userBase = doc(db, "users", id);
@@ -60,13 +60,25 @@ export const POST = async (req: NextRequest) => {
             index: index,
         });
 
+        const userObj = {
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            userName: userName,
+            languageCode: languageCode,
+            // allowsWriteToPm: allowsWriteToPm,
+            wallet: smartWallet,
+            idWallet: index,
+        }
+        console.log("USER OBJ", userObj);
+
         await setDoc(userBase, {
             id: id,
             firstName: firstName,
             lastName: lastName,
             userName: userName,
             languageCode: languageCode,
-            allowsWriteToPm: allowsWriteToPm,
+            // allowsWriteToPm: allowsWriteToPm,
             wallet: smartWallet,
             idWallet: index,
         });

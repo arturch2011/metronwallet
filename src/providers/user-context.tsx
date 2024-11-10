@@ -4,15 +4,15 @@ import WebApp from "@twa-dev/sdk";
 // import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from "react";
 
-// interface AuthContextType {
-//   user: UserData | null;
-//   setSAccountInfo: ({ idWallet, wallet }: { idWallet: number, wallet: string }) => void;
-// }
-
 interface AuthContextType {
-    user: UserData | null;
-    setSAccountInfo: () => void;
-  }
+  user: UserData | null;
+  setSAccountInfo: ({ idWallet, wallet }: { idWallet: number, wallet: string }) => void;
+}
+
+// interface AuthContextType {
+//     user: UserData | null;
+//     setSAccountInfo: ({ idWallet, wallet }: { idWallet: number, wallet: string }) => void;
+//   }
 
 interface CreateSAccountResponse {
   id: string
@@ -33,6 +33,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
+  const [userSAccount, setUserSAccount] = useState<UserData | null>(null);
   // const router = useRouter();
 
   useEffect(() => {
@@ -59,34 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //     return () => unsubscribe();
   // }, [router]);
 
-  // async function setSAccountInfo({ idWallet, wallet }: { idWallet: number, wallet: string }) {
-  //   const response: CreateSAccountResponse = await fetch('/api/createSaccount', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       id: user?.id,
-  //       firstName: user?.first_name,
-  //       lastName: user?.last_name,
-  //       username: user?.username,
-  //       languageCode: user?.language_code,
-  //     }),
-  //   }).then((res) => res.json());
-  //   setUser((prevUser) => {
-  //     if (prevUser) {
-  //       return {
-  //         ...prevUser,
-  //         wallet,
-  //         idWallet,
-  //       };
-  //     }
-  //     return prevUser;
-  //   });
-  // }
-
-  async function setSAccountInfo() {
-
+  async function setSAccountInfo({ idWallet, wallet }: { idWallet: number, wallet: string }) {
     const response: CreateSAccountResponse = await fetch('/api/createSaccount', {
       method: 'POST',
       headers: {
@@ -111,6 +85,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return prevUser;
     });
   }
+
+  // async function setSAccountInfo() {
+  //   const response: CreateSAccountResponse = await fetch('/api/createSaccount', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       id: user?.id,
+  //       firstName: user?.first_name,
+  //       lastName: user?.last_name,
+  //       username: user?.username,
+  //       languageCode: user?.language_code,
+  //     }),
+  //   }).then((res) => res.json());
+  //   setUser((prevUser) => {
+  //     if (prevUser) {
+  //       return {
+  //         ...prevUser,
+  //         wallet: response.wallet,
+  //         idWallet: response.idWallet,
+  //       };
+  //     }
+  //     return prevUser;
+  //   });
+  // }
 
   return (
     <AuthContext.Provider value={{ user, setSAccountInfo }}>{children}</AuthContext.Provider>

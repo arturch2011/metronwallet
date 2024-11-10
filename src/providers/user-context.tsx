@@ -4,10 +4,27 @@ import WebApp from "@twa-dev/sdk";
 // import { useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from "react";
 
+// interface AuthContextType {
+//   user: UserData | null;
+//   setSAccountInfo: ({ idWallet, wallet }: { idWallet: number, wallet: string }) => void;
+// }
+
 interface AuthContextType {
-  user: UserData | null;
-  setSAccountInfo: ({ idWallet }: { idWallet: number }) => void;
+    user: UserData | null;
+    setSAccountInfo: () => void;
+  }
+
+interface CreateSAccountResponse {
+  id: string
+  firstName: string;
+  lastName: string
+  userName: string
+  languageCode: string
+  allowsWriteToPm: boolean
+  wallet: string
+  idWallet: number;
 }
+
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -22,6 +39,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (WebApp.initDataUnsafe.user) {
       setUser(WebApp.initDataUnsafe.user as UserData);
     }
+    
+    
   }, []);
 
   // useEffect(() => {
@@ -40,12 +59,53 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //     return () => unsubscribe();
   // }, [router]);
 
-  function setSAccountInfo({ idWallet }: { idWallet: number }) {
+  // async function setSAccountInfo({ idWallet, wallet }: { idWallet: number, wallet: string }) {
+  //   const response: CreateSAccountResponse = await fetch('/api/createSaccount', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       id: user?.id,
+  //       firstName: user?.first_name,
+  //       lastName: user?.last_name,
+  //       username: user?.username,
+  //       languageCode: user?.language_code,
+  //     }),
+  //   }).then((res) => res.json());
+  //   setUser((prevUser) => {
+  //     if (prevUser) {
+  //       return {
+  //         ...prevUser,
+  //         wallet,
+  //         idWallet,
+  //       };
+  //     }
+  //     return prevUser;
+  //   });
+  // }
+
+  async function setSAccountInfo() {
+
+    const response: CreateSAccountResponse = await fetch('/api/createSaccount', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: user?.id,
+        firstName: user?.first_name,
+        lastName: user?.last_name,
+        username: user?.username,
+        languageCode: user?.language_code,
+      }),
+    }).then((res) => res.json());
     setUser((prevUser) => {
       if (prevUser) {
         return {
           ...prevUser,
-          idWallet,
+          wallet: response.wallet,
+          idWallet: response.idWallet,
         };
       }
       return prevUser;

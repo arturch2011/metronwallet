@@ -8,4 +8,5 @@ interface UserData {
     language_code: string;
     is_premium?: boolean;
     idWallet?: number;
+    wallet?: string;
 }

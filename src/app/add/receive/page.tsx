@@ -1,6 +1,7 @@
 "use client";
 
 import { QrCode } from "@/components/receive/QrCode";
+import { Back } from "@/components/ui/Back";
 import { Button } from "@/components/ui/Button";
 import { ProgressIndicator } from "@/components/ui/ProgressIndicator";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -28,6 +29,7 @@ export default function ReceivePage() {
   } else {
     return (
       <Skeleton>
+        <Back route="/add" />
         <QrCode address={user.wallet!} />
         <p className="w-full text-center">{transformarString(user.wallet!)}</p>
         <CopyToClipboard

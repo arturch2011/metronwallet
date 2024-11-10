@@ -4,6 +4,7 @@ import { useOutsideClick } from "@/hooks/useOutsideClick";
 import { useRef, useState } from "react";
 import { Button } from "../ui/Button";
 import { IoIosArrowDown } from "react-icons/io";
+import { useAuth } from "@/providers/user-context";
 
 interface TokenDropProps {
   onSelect: (token: TokenProps) => void;
@@ -15,6 +16,7 @@ export const TokenDrop = ({ onSelect, selected }: TokenDropProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const submenuRef = useRef<HTMLDivElement>(null);
   const toggleMenu = () => setIsOpen(false);
+  const { tokens } = useAuth();
 
   useOutsideClick(submenuRef, toggleMenu);
   const handleSelect = (token: TokenProps) => {
@@ -23,7 +25,7 @@ export const TokenDrop = ({ onSelect, selected }: TokenDropProps) => {
     onSelect(token);
   };
 
-  const tokens = [
+  const token = [
     {
       imgUrl:
         "https://logowik.com/content/uploads/images/ethereum-eth7803.logowik.com.webp",
@@ -58,7 +60,7 @@ export const TokenDrop = ({ onSelect, selected }: TokenDropProps) => {
           ref={submenuRef}
           className="absolute top-[120%] w-full bg-black/40 text-white/40 backdrop-blur-md rounded-2xl shadow-lg p-4  z-20 max-h-1/2 overflow-y-auto flex flex-col gap-4 border border-white/60"
         >
-          {tokens.map((token, index) => (
+          {tokens!.map((token, index) => (
             <button
               key={index}
               className="flex w-full items-center justify-between gap-4 "

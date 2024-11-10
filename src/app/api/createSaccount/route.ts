@@ -32,7 +32,10 @@ export const POST = async (req: NextRequest) => {
 
         if (userDoc.exists()) {
             return new NextResponse(
-                JSON.stringify({ message: "User already have an account" }),
+                JSON.stringify({
+                    message: "User already have an account",
+                    user: userDoc.data(),
+                }),
                 { status: 200 }
             );
         }

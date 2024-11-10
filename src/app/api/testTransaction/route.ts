@@ -30,6 +30,8 @@ export const POST = async (req: NextRequest) => {
             index: idWallet,
         });
 
+        console.log("Smartwallet addresss", smartWallet);
+
         // console.log("Smartwallet addresss", smartWallet);
         const amountWei: bigint = ethers.parseUnits(amount.toString(), 18);
    

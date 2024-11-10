@@ -1,23 +1,42 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createSmartAccountClient } from "@biconomy/account";
-import { collection, doc, getDocs, query, setDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    collection,
+    doc,
+    getDocs,
+    query,
+    setDoc,
+    getDoc,
+} from "firebase/firestore";
 import { ethers } from "ethers";
-import { db, auth } from "@/firebase/config";
+import { db } from "@/firebase/config";
 
 export const POST = async (req: NextRequest) => {
     console.log("POSST HEREEEEEEEEEEEEEE");
     try {
         const url = process.env.RPC_URL as string;
 
-        
         const data = await req.json();
         console.log("DATAAAAAAAAAAAAAA", data);
-        const { email, password } = data;
+        const {
+            id,
+            firstName,
+            lastName,
+            userName,
+            languageCode,
+            allowsWriteToPm,
+        } = data;
 
-        
+        const userBase = doc(db, "users", id);
+        const userDoc = await getDoc(userBase);
 
-        const userBase = doc(db, "users", email);
+        if (userDoc.exists()) {
+            return new NextResponse(
+                JSON.stringify({ message: "User already have an account" }),
+                { status: 200 }
+            );
+        }
+
         const usersRef = collection(db, "users");
         const queryIndex = query(usersRef);
         const index = (await getDocs(queryIndex)).size || 0;
@@ -41,31 +60,33 @@ export const POST = async (req: NextRequest) => {
             index: index,
         });
 
-        await createUserWithEmailAndPassword(auth, email, password).then(
-            async (userCredential) => {
-                const user = userCredential.user;
-                const uid = user.uid;
-
-                await setDoc(userBase, {
-                    uid: uid,
-                    email: data.email,
-                    wallet: smartWallet,
-                    alchemyWallet: "",
-                    idWallet: index,
-                });
-            }
-        );
+        const user = await setDoc(userBase, {
+            id: id,
+            firstName: firstName,
+            lastName: lastName,
+            userName: userName,
+            languageCode: languageCode,
+            allowsWriteToPm: allowsWriteToPm,
+            wallet: smartWallet,
+            idWallet: index,
+        });
 
         return new NextResponse(
-            JSON.stringify({ message: "User created successfully" }),
+            JSON.stringify({
+                message: "User created successfully",
+                user: user,
+            }),
             {
                 status: 200,
             }
         );
     } catch (error) {
         console.log(error);
-        return new NextResponse(JSON.stringify({ message: JSON.stringify(error) }), {
-            status: 500,
-        });
+        return new NextResponse(
+            JSON.stringify({ message: JSON.stringify(error) }),
+            {
+                status: 500,
+            }
+        );
     }
 };

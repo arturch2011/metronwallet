@@ -1,13 +1,15 @@
 import { ethers } from "ethers";
 import ERC20 from "@/utils/ERC20.json";
 import { createSmartAccountClient, PaymasterMode } from "@biconomy/account";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async () => {
+export const POST = async (req: NextRequest) => {
     try {
         const url = process.env.RPC_URL as string;
-        const idWallet = 0;
-        // const data = await req.json();
+        // const idWallet = 0;
+        const data = await req.json();
+
+        const { to, amout, idWallet } = data;
 
         const provider = new ethers.JsonRpcProvider(url);
         const signer = new ethers.Wallet(
@@ -30,7 +32,7 @@ export const POST = async () => {
 
         console.log("Smartwallet addresss", smartWallet);
 
-        const amount: bigint = ethers.parseUnits("100", 18);
+        const amount: bigint = ethers.parseUnits(amout.toString(), 18);
         const contract = new ethers.Contract(
             `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
             ERC20,
@@ -41,9 +43,9 @@ export const POST = async () => {
         const transferFunction = contract.getFunction("transfer");
 
         const mintTx = await transferFunction.populateTransaction(
-            "0xC4b9190C160253071375c4d3e4f2574E8Bb57FD5",
+            to,
             amount.toString()
-          );
+        );
 
         const tx = {
             to: `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
@@ -70,8 +72,11 @@ export const POST = async () => {
             { status: 200 }
         );
     } catch (error) {
-        return new NextResponse(JSON.stringify({ message: JSON.stringify(error) }), {
-            status: 500,
-        });
+        return new NextResponse(
+            JSON.stringify({ message: JSON.stringify(error) }),
+            {
+                status: 500,
+            }
+        );
     }
 };

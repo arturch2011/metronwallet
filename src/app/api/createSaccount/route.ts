@@ -60,7 +60,7 @@ export const POST = async (req: NextRequest) => {
             index: index,
         });
 
-        await setDoc(userBase, {
+        const user = await setDoc(userBase, {
             id: id,
             firstName: firstName,
             lastName: lastName,
@@ -72,7 +72,10 @@ export const POST = async (req: NextRequest) => {
         });
 
         return new NextResponse(
-            JSON.stringify({ message: "User created successfully" }),
+            JSON.stringify({
+                message: "User created successfully",
+                user: user,
+            }),
             {
                 status: 200,
             }

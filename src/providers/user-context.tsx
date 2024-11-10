@@ -15,14 +15,17 @@ interface AuthContextType {
 //   }
 
 interface CreateSAccountResponse {
-  id: string
-  firstName: string;
-  lastName: string
-  userName: string
-  languageCode: string
-  allowsWriteToPm: boolean
-  wallet: string
-  idWallet: number;
+  message: string
+  user: {
+    id: string
+    firstName: string;
+    lastName: string
+    userName: string
+    languageCode: string
+    allowsWriteToPm: boolean
+    wallet: string
+    idWallet: number;
+  }
 }
 
 
@@ -78,8 +81,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (prevUser) {
         return {
           ...prevUser,
-          wallet: response.wallet,
-          idWallet: response.idWallet,
+          wallet: response.user.wallet,
+          idWallet: response.user.idWallet,
         };
       }
       return prevUser;

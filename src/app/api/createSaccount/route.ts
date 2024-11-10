@@ -62,8 +62,9 @@ export const POST = async (req: NextRequest) => {
         const smartWallet = await smartAccount.getAccountAddress({
             index: index,
         });
+        
 
-        const user = await setDoc(userBase, {
+        const userObj = {
             id: id,
             firstName: firstName,
             lastName: lastName,
@@ -72,7 +73,9 @@ export const POST = async (req: NextRequest) => {
             // allowsWriteToPm: allowsWriteToPm,
             wallet: smartWallet,
             idWallet: index,
-        });
+        }
+
+        const user = await setDoc(userBase, userObj);
 
         return new NextResponse(
             JSON.stringify({

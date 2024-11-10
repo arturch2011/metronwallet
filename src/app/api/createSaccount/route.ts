@@ -12,12 +12,12 @@ import { ethers } from "ethers";
 import { db } from "@/firebase/config";
 
 export const POST = async (req: NextRequest) => {
-    console.log("POSST HEREEEEEEEEEEEEEE");
+    // console.log("POSST HEREEEEEEEEEEEEEE");
     try {
         const url = process.env.RPC_URL as string;
 
         const data = await req.json();
-        console.log("DATAAAAAAAAAAAAAA", data);
+        // console.log("DATAAAAAAAAAAAAAA", data);
         const {
             id,
             firstName,

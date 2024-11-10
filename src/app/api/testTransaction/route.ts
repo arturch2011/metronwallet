@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
         // const idWallet = 0;
         const data = await req.json();
 
-        const { to, amout, idWallet } = data;
+        const { to, amount, idWallet } = data;
 
         const provider = new ethers.JsonRpcProvider(url);
         const signer = new ethers.Wallet(
@@ -30,21 +30,21 @@ export const POST = async (req: NextRequest) => {
             index: idWallet,
         });
 
-        console.log("Smartwallet addresss", smartWallet);
-
-        const amount: bigint = ethers.parseUnits(amout.toString(), 18);
+        // console.log("Smartwallet addresss", smartWallet);
+        const amountWei: bigint = ethers.parseUnits(amount.toString(), 18);
+   
         const contract = new ethers.Contract(
             `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
             ERC20,
             signer
         );
 
-        console.log("Contract", contract);
+        // console.log("Contract", contract);
         const transferFunction = contract.getFunction("transfer");
 
         const mintTx = await transferFunction.populateTransaction(
             to,
-            amount.toString()
+            amountWei.toString()
         );
 
         const tx = {
@@ -55,6 +55,7 @@ export const POST = async (req: NextRequest) => {
         const userOpResponse = await smartAccount.sendTransaction(tx, {
             paymasterServiceData: { mode: PaymasterMode.SPONSORED },
         });
+        console.log("UserOpResponse", userOpResponse);
 
         const { transactionHash } = await userOpResponse.waitForTxHash();
         console.log("Transaction Hash", transactionHash);

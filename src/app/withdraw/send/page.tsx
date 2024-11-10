@@ -4,15 +4,36 @@ import { TokenDrop } from "@/components/send/TokenDrop";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Skeleton } from "@/components/ui/Skeleton";
+import { useAuth } from "@/providers/user-context";
 import { useState } from "react";
 
 export default function SendPage() {
+  const { user } = useAuth();
   const [selectedToken, setSelectedToken] = useState<TokenProps | null>(null);
   const [receiverAddr, setReceiverAddr] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
   const handleSelect = (token: TokenProps) => {
     setSelectedToken(token);
   };
+
+  async function handleSendToken() {
+
+    if (!user?.idWallet) return;
+
+    const response = fetch('/api/testTransaction', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        // token: selectedToken,
+        to: receiverAddr,
+        amount: amount,
+        idWallet: user.idWallet,
+      }),
+    })
+    .then((res) => res.json())
+  }
   return (
     <Skeleton>
       <div className="w-full p-4 rounded-2xl bg-white/20 shadow-md flex flex-col justify-center  ">
@@ -32,7 +53,14 @@ export default function SendPage() {
           onChange={(e) => setAmount(Number(e.target.value))}
         />
       </div>
-      <Button className="bg-yellow-400 text-black ">Send</Button>
+      <Button 
+        className="bg-yellow-400 text-black"
+        onClick={async () => {
+          await handleSendToken()
+        }}
+      >
+        Send
+      </Button>
     </Skeleton>
   );
 }

@@ -24,19 +24,15 @@ export const POST = async (req: NextRequest) => {
         const smartAccount = await createSmartAccountClient(
             biconomySmartAccountConfig
         );
-        await smartAccount.getAccountAddress({
+        const smartAddress = await smartAccount.getAccountAddress({
             index: idWallet,
         });
            
-        // const contract = new ethers.Contract(
-        //     `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
-        //     ERC20,
-        //     signer
-        // );
-
-        // // console.log("Contract", contract);
-        // const transferFunction = contract.getFunction("transfer");
-
+        const contract = new ethers.Contract(
+            `${process.env.NEXT_PUBLIC_CONTRACTERC20}`,
+            ERC20,
+            signer
+        );
 
         const balances = await smartAccount.getBalances()
         const formatedBalances = balances.map((balance) => {
@@ -48,7 +44,16 @@ export const POST = async (req: NextRequest) => {
                 formattedAmount: balance.formattedAmount,
             };
         })
-        console.log(formatedBalances)
+
+        const balanceOf = contract.getFunction("balanceOf");
+        const MTKBalance = await balanceOf(smartAddress);
+
+        formatedBalances.push({ 
+            asset: "MTK", 
+            address: '0x4c53e9914FA38B69756BD9fF1a1CF338967770FD', 
+            amount: MTKBalance.toString(), 
+            formattedAmount: ethers.formatUnits(MTKBalance, 18)
+        });
 
         return new NextResponse(
             JSON.stringify({ message: "success on transaction ", formatedBalances }),

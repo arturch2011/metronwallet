@@ -15,8 +15,6 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserData | null>(null);
-  const [userSAccount, setUserSAccount] = useState<UserData | null>(null);
-  // const router = useRouter();
 
   const initUser = async () => {
     let tguser: UserData | null = null;
